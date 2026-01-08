@@ -27,28 +27,31 @@ class Player:
         self,
         stat_block,
         weapon,
-        resource_type=ResourceType.NONE,
+        resource_type=0,
         resource_amount=0,
-        ability_list={},
+        ability_list=[],
     ):
         self.stats = stat_block
         self.weapon = weapon
-        self.resource_type = resource_type
+        self.resource_type = ResourceType(resource_type)
         self.current_resource = resource_amount
         self.max_resource = resource_amount
         self.ability_list = ability_list
 
-    def cast(self, ability):
-        raise NotImplementedError
-
     def do_damage(self, target, ability):
         multipliers = 1 + self.stats.versatility / 100
         min_damage = (
-            (ability.power * self.weapon.min_damage + (self.stats.primary / 3.5))
+            (
+                ability.ability_power * self.weapon.min_damage
+                + (self.stats.primary / 3.5)
+            )
             * self.weapon.attack_speed
         ) * multipliers
         max_damage = (
-            (ability.power * self.weapon.max_damage + (self.stats.primary / 3.5))
+            (
+                ability.ability_power * self.weapon.max_damage
+                + (self.stats.primary / 3.5)
+            )
             * self.weapon.attack_speed
         ) * multipliers
 

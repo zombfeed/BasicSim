@@ -1,0 +1,22 @@
+{
+  "sinister_strike": {
+    "name": "Sinister Strike",
+    "resource_type": 1,
+    "gcd": 1,
+    "cooldown": 0,
+    "resource_cost": 75,
+    "ability_type": 1,
+    "ability_power": 50,
+    "ignore_armor": false
+  },
+  "attack": {
+    "name": "attack",
+    "resource_type": 0,
+    "gcd": 1,
+    "cooldown": 0,
+    "resource_cost": 0,
+    "ability_type": 1,
+    "ability_power": 10,
+    "ignore_armor": false
+  }
+}

@@ -2,7 +2,6 @@ import os
 import json
 
 from abilities import Ability
-from resourcetype import ResourceType
 
 
 def get_class_actions_json(class_name):

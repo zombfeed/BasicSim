@@ -1,11 +1,9 @@
 import os
-import json
-import math
+import sys
 import simpy
 from actions import ActionPriorityList as APL
 from APLParser import parse_actions_file
-from abilities import Ability, AbilityType
-from player import Player, StatBlock, ResourceType, Weapon
+from player import Player, StatBlock, Weapon
 from targetdummy import TargetDummy
 
 
@@ -15,24 +13,22 @@ rogue_file = os.path.join("./resources", "rogue_actions.json")
 
 
 def main():
+    actions_filepath = sys.argv[1]
+    if not os.path.isfile(actions_filepath):
+        raise Exception(f"Error: could not find {actions_filepath}")
+    if os.path.splitext(actions_filepath)[1] != ".actions":
+        raise Exception(
+            f'Error: {actions_filepath} is not a valid file (program requires a ".actions" file'
+        )
     env = simpy.Environment()
-    env.process(wrapper(env, 5 * 60))
+    env.process(wrapper(env, actions_filepath, 5 * 60))
     env.run(5 * 60 + 1)
-    # build_player(actions_file)
 
 
-def wrapper(env, run_length):
-    result = yield env.process(basic_sim(env, run_length))
+def wrapper(env, actions_filepath, run_length):
+    result = yield env.process(basic_sim(env, actions_filepath, run_length))
     print(f"Total damage: {result}")
     print(f"DPS: {float(result / (5 * 60))}")
-
-
-def calculate_total_damage(player, target, run_length):
-    damage_instance = player.do_damage(
-        target,
-    )
-    total_damage = damage_instance * math.floor((run_length / player.attack_speed))
-    print(f"player did {total_damage} over {run_length} seconds")
 
 
 def build_player(apl_file_path):
@@ -47,9 +43,9 @@ def build_player(apl_file_path):
     return player
 
 
-def basic_sim(env, run_length):
+def basic_sim(env, actions_filepath, run_length):
     target = TargetDummy(1000, 30)
-    player = build_player(actions_file)
+    player = build_player(actions_filepath)
     total_damage = 0
     print("Running simulation...")
     while True:

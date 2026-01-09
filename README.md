@@ -2,6 +2,12 @@
 
 Program that runs basic DPS simulation of a World of Warcraft class in the command line.
 
+Prints in command line the simulation results
+```
+Running simulation...
+Total damage: 528600
+DPS: 1762.0
+```
 
 ## How to Run
 

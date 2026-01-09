@@ -21,16 +21,12 @@ class ActionPriorityList:
     def build_list(self, action_list):
         self.action_class, actions = action_list
         for action in actions:
-            self.add(self.create_ability(self.action_class, action))
+            self.add(self.create_ability(action))
 
-    def create_ability(self, action_class, action):
-        match action_class.lower():
-            case "rogue":
-                return Ability(
-                    **get_class_actions_json(action_class)[action],
-                )
-            case _:
-                raise Exception("Error: action class not specified in action file")
+    def create_ability(self, action):
+        if self.action_class == "":
+            raise Exception("Error: action class not specified in action file")
+        return Ability(**get_class_actions_json(self.action_class)[action])
 
     def add(self, action):
         self.actions.append(action)
